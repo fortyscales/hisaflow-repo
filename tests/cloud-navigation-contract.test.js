@@ -1,0 +1,15 @@
+const fs=require('fs'),assert=require('assert');
+const read=p=>fs.readFileSync(p,'utf8');
+const app=read('src/App.jsx'),side=read('src/components/SideBar.jsx'),tr=read('src/i18n/translations.js'),cloud=read('src/screens/CloudScreen.jsx'),main=read('electron/main.js'),pre=read('electron/preload.js'),sync=read('electron/syncService.js'),renderer=read('src/services/SyncService.js'),migrations=read('electron/migrations.js');
+assert(app.includes('import CloudScreen from "./screens/CloudScreen.jsx";'));
+assert(app.includes('import ReconciliationScreen from "./screens/ReconciliationScreen.jsx";'));
+assert(app.includes('activeScreen === "cloud"')&&app.includes('activeScreen === "reconciliation"'));
+assert(side.includes('key: "cloud"')&&side.includes('key: "reconciliation"'));
+assert(tr.includes('navCloudDevices: "Cloud & Devices"')&&tr.includes('navCloudDevices: "Wingu na Vifaa"'));
+assert(cloud.includes("baseUrl:'http://localhost:4100'"));
+for(const x of ['cloud:login','cloud:register','cloud:devices','cloud:revokeDevice','sync:trigger','reconciliation:issues']) assert(main.includes(x),x);
+for(const x of ['getCloudSession','cloudLogin','getCloudDevices','triggerCloudSync','getReconciliationIssues','getCachedReconciliationIssues']) assert(pre.includes(x),x);
+for(const x of ['getPullCursor','applyRemoteChanges','recordConflicts','replaceReconciliationIssues']) assert(sync.includes(x),x);
+assert(renderer.includes('window.hisaflow.triggerCloudSync'));
+for(const v of ['version: 18','version: 19','version: 20']) assert(migrations.includes(v),v);
+console.log('PASS cloud navigation + desktop transport contract');

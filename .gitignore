@@ -1,0 +1,9 @@
+node_modules/
+dist/
+release/
+*.log
+.DS_Store
+README.md
+RELEASE-2.3.9.md
+RELEASE-v2.3.8.md
+RUNNING_HISAFLOW.md

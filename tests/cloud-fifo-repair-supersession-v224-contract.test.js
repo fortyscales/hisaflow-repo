@@ -1,0 +1,12 @@
+const fs = require('fs');
+const assert = require('assert');
+const db = fs.readFileSync('electron/db.js','utf8');
+const migrations = fs.readFileSync('electron/migrations.js','utf8');
+assert(db.includes('cloudBoundForInventory'), 'cloud-bound startup repair gate missing');
+assert(db.includes('cloud_shop_bound_at'), 'cloud binding must gate speculative FIFO repair');
+assert(migrations.includes("version: 26"), 'migration 26 missing');
+assert(migrations.includes("supersede-redundant-fifo-repair-snapshots"), 'repair supersession migration missing');
+assert(migrations.includes("NOT EXISTS (SELECT 1 FROM stock_movements m WHERE m.batch_id=r.id)"), 'used repair batches must not be auto-deleted');
+assert(migrations.includes("g.id NOT LIKE 'batch_repair_%'"), 'genuine FIFO capacity guard missing');
+assert(migrations.includes("operation='UPSERT'"), 'pending speculative upsert cleanup missing');
+console.log('v2.2.24 cloud FIFO repair supersession contract: PASS');

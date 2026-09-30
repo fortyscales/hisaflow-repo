@@ -1,0 +1,286 @@
+[
+  {
+    "entity_type": "product",
+    "entity_id": "p_1789833480567_kypwwz",
+    "payload": {
+      "id": "p_1789833480567_kypwwz",
+      "name": "test-cola",
+      "size": "mls",
+      "unit": "dazani",
+      "brand": "kilimanjaro",
+      "stock": 9,
+      "shop_id": null,
+      "version": 4,
+      "category": "Drinks",
+      "device_id": null,
+      "image_uri": null,
+      "created_at": "2026-09-19T15:58:00.567Z",
+      "updated_at": "2026-09-20T10:09:56.932Z",
+      "expiry_date": null,
+      "buying_price": 700,
+      "selling_price": 1000
+    }
+  },
+  {
+    "entity_type": "product",
+    "entity_id": "p_1789897128841_nvkhvf",
+    "payload": {
+      "id": "p_1789897128841_nvkhvf",
+      "name": "iphone 18 pro max",
+      "size": "",
+      "unit": "pc",
+      "brand": "apple",
+      "stock": 337,
+      "shop_id": null,
+      "version": 5,
+      "category": "electronics",
+      "device_id": null,
+      "image_uri": null,
+      "created_at": "2026-09-20T09:38:48.842Z",
+      "updated_at": "2026-09-20T10:09:52.293Z",
+      "expiry_date": null,
+      "buying_price": 1200000,
+      "selling_price": 1700000
+    }
+  },
+  {
+    "entity_type": "stock_batch",
+    "entity_id": "batch_repair_p_1789833480567_kypwwz_2fa8z0",
+    "payload": {
+      "id": "batch_repair_p_1789833480567_kypwwz_2fa8z0",
+      "date": "2026-09-19T15:58:00.567Z",
+      "shop_id": null,
+      "version": 1,
+      "quantity": 9,
+      "device_id": null,
+      "remaining": 9,
+      "account_id": null,
+      "product_id": "p_1789833480567_kypwwz",
+      "updated_at": null,
+      "supplier_id": null,
+      "buying_price": 700,
+      "account_label": null,
+      "supplier_name": null,
+      "account_number": null,
+      "payment_method": null
+    }
+  },
+  {
+    "entity_type": "stock_batch",
+    "entity_id": "batch_repair_p_1789833480567_kypwwz_xey1cd",
+    "payload": {
+      "id": "batch_repair_p_1789833480567_kypwwz_xey1cd",
+      "date": "2026-09-19T15:58:00.567Z",
+      "shop_id": null,
+      "version": 1,
+      "quantity": 9,
+      "device_id": null,
+      "remaining": 9,
+      "account_id": null,
+      "product_id": "p_1789833480567_kypwwz",
+      "updated_at": null,
+      "supplier_id": null,
+      "buying_price": 700,
+      "account_label": null,
+      "supplier_name": null,
+      "account_number": null,
+      "payment_method": null
+    }
+  },
+  {
+    "entity_type": "stock_batch",
+    "entity_id": "batch_repair_p_1789897128841_nvkhvf_d5960l",
+    "payload": {
+      "id": "batch_repair_p_1789897128841_nvkhvf_d5960l",
+      "date": "2026-09-20T09:38:48.842Z",
+      "shop_id": null,
+      "version": 1,
+      "quantity": 337,
+      "device_id": null,
+      "remaining": 337,
+      "account_id": null,
+      "product_id": "p_1789897128841_nvkhvf",
+      "updated_at": null,
+      "supplier_id": null,
+      "buying_price": 1200000,
+      "account_label": null,
+      "supplier_name": null,
+      "account_number": null,
+      "payment_method": null
+    }
+  },
+  {
+    "entity_type": "stock_batch",
+    "entity_id": "batch_repair_p_1789897128841_nvkhvf_xji4q0",
+    "payload": {
+      "id": "batch_repair_p_1789897128841_nvkhvf_xji4q0",
+      "date": "2026-09-20T09:38:48.842Z",
+      "shop_id": null,
+      "version": 1,
+      "quantity": 337,
+      "device_id": null,
+      "remaining": 337,
+      "account_id": null,
+      "product_id": "p_1789897128841_nvkhvf",
+      "updated_at": null,
+      "supplier_id": null,
+      "buying_price": 1200000,
+      "account_label": null,
+      "supplier_name": null,
+      "account_number": null,
+      "payment_method": null
+    }
+  },
+  {
+    "entity_type": "stock_movement",
+    "entity_id": "mov_0d09a8161e27714f1f4b24b7aa2b4a02",
+    "payload": {
+      "id": "mov_0d09a8161e27714f1f4b24b7aa2b4a02",
+      "shop_id": "148a56f7-94af-402b-99fc-ccb843d5ed17",
+      "batch_id": "batch_1789897128842_o68xat",
+      "metadata": null,
+      "device_id": "e498ed72-7f97-4999-a4a3-a31cb0f647fa",
+      "unit_cost": 1200000,
+      "actor_name": null,
+      "created_at": "2026-09-20T09:38:48.842Z",
+      "product_id": "p_1789897128841_nvkhvf",
+      "reference_id": "batch_1789897128842_o68xat",
+      "movement_type": "PURCHASE",
+      "quantity_delta": 350,
+      "reference_type": "stock_batch"
+    }
+  },
+  {
+    "entity_type": "stock_movement",
+    "entity_id": "mov_0e2559b0f4a14393bf9f6d27013262cf",
+    "payload": {
+      "id": "mov_0e2559b0f4a14393bf9f6d27013262cf",
+      "shop_id": "148a56f7-94af-402b-99fc-ccb843d5ed17",
+      "batch_id": "batch_repair_p_1789833480567_kypwwz_77w2a5",
+      "metadata": null,
+      "device_id": "e498ed72-7f97-4999-a4a3-a31cb0f647fa",
+      "unit_cost": 700,
+      "actor_name": "Owner",
+      "created_at": "2026-09-20T10:09:56.932Z",
+      "product_id": "p_1789833480567_kypwwz",
+      "reference_id": "s_5a05321e-d32f-4eb3-83f5-fb8e9f3f20a9",
+      "movement_type": "SALE",
+      "quantity_delta": -1,
+      "reference_type": "sale"
+    }
+  },
+  {
+    "entity_type": "stock_movement",
+    "entity_id": "mov_1a8b2a2102f9197904b383460440d86f",
+    "payload": {
+      "id": "mov_1a8b2a2102f9197904b383460440d86f",
+      "shop_id": "148a56f7-94af-402b-99fc-ccb843d5ed17",
+      "batch_id": "batch_1789833480568_6ge828",
+      "metadata": null,
+      "device_id": "7b50d5e8-a0e6-45a4-a2d6-028a0291bad2",
+      "unit_cost": 700,
+      "actor_name": "Owner",
+      "created_at": "2026-09-20T09:58:56.598Z",
+      "product_id": "p_1789833480567_kypwwz",
+      "reference_id": "s_a1d8c5b8-8f5f-4b06-83b2-dc4cb6a74df4",
+      "movement_type": "SALE",
+      "quantity_delta": -1,
+      "reference_type": "sale"
+    }
+  },
+  {
+    "entity_type": "stock_movement",
+    "entity_id": "mov_372c3548658514688d0f63947348fb8c",
+    "payload": {
+      "id": "mov_372c3548658514688d0f63947348fb8c",
+      "shop_id": "148a56f7-94af-402b-99fc-ccb843d5ed17",
+      "batch_id": "batch_1789897128842_o68xat",
+      "metadata": null,
+      "device_id": "e498ed72-7f97-4999-a4a3-a31cb0f647fa",
+      "unit_cost": 1200000,
+      "actor_name": "Owner",
+      "created_at": "2026-09-20T10:09:52.293Z",
+      "product_id": "p_1789897128841_nvkhvf",
+      "reference_id": "s_f64cedfd-f2ed-4da8-b2b8-ee5f704f2897",
+      "movement_type": "SALE",
+      "quantity_delta": -1,
+      "reference_type": "sale"
+    }
+  },
+  {
+    "entity_type": "stock_movement",
+    "entity_id": "mov_47de17abb32bb667efdd5288cd352ec9",
+    "payload": {
+      "id": "mov_47de17abb32bb667efdd5288cd352ec9",
+      "shop_id": "148a56f7-94af-402b-99fc-ccb843d5ed17",
+      "batch_id": "batch_1789833480568_6ge828",
+      "metadata": null,
+      "device_id": "7b50d5e8-a0e6-45a4-a2d6-028a0291bad2",
+      "unit_cost": 700,
+      "actor_name": null,
+      "created_at": "2026-09-19T15:58:00.568Z",
+      "product_id": "p_1789833480567_kypwwz",
+      "reference_id": "batch_1789833480568_6ge828",
+      "movement_type": "PURCHASE",
+      "quantity_delta": 10,
+      "reference_type": "stock_batch"
+    }
+  },
+  {
+    "entity_type": "stock_movement",
+    "entity_id": "mov_9d332dd50ae7e60d77ffe52d2782a889",
+    "payload": {
+      "id": "mov_9d332dd50ae7e60d77ffe52d2782a889",
+      "shop_id": "148a56f7-94af-402b-99fc-ccb843d5ed17",
+      "batch_id": "batch_1789897128842_o68xat",
+      "metadata": null,
+      "device_id": "e498ed72-7f97-4999-a4a3-a31cb0f647fa",
+      "unit_cost": 1200000,
+      "actor_name": "Owner",
+      "created_at": "2026-09-20T09:39:06.387Z",
+      "product_id": "p_1789897128841_nvkhvf",
+      "reference_id": "s_af47174a-0cf5-4cd5-8206-5ef9f90e42a5",
+      "movement_type": "SALE",
+      "quantity_delta": -11,
+      "reference_type": "sale"
+    }
+  },
+  {
+    "entity_type": "stock_movement",
+    "entity_id": "mov_acb7def28747f815e4788fd071b3e5c8",
+    "payload": {
+      "id": "mov_acb7def28747f815e4788fd071b3e5c8",
+      "shop_id": "148a56f7-94af-402b-99fc-ccb843d5ed17",
+      "batch_id": "batch_1789897128842_o68xat",
+      "metadata": null,
+      "device_id": "e498ed72-7f97-4999-a4a3-a31cb0f647fa",
+      "unit_cost": 1200000,
+      "actor_name": "Owner",
+      "created_at": "2026-09-20T09:39:35.490Z",
+      "product_id": "p_1789897128841_nvkhvf",
+      "reference_id": "cs_2b1c2d91-d29b-4777-b4c0-6a20af2ee06e",
+      "movement_type": "SALE",
+      "quantity_delta": -1,
+      "reference_type": "credit_sale"
+    }
+  },
+  {
+    "entity_type": "stock_movement",
+    "entity_id": "mov_c70c793d8f45d51dc0e919072411c463",
+    "payload": {
+      "id": "mov_c70c793d8f45d51dc0e919072411c463",
+      "shop_id": "148a56f7-94af-402b-99fc-ccb843d5ed17",
+      "batch_id": "batch_repair_p_1789833480567_kypwwz_77w2a5",
+      "metadata": null,
+      "device_id": "e498ed72-7f97-4999-a4a3-a31cb0f647fa",
+      "unit_cost": 700,
+      "actor_name": null,
+      "created_at": "2026-09-19T15:58:00.567Z",
+      "product_id": "p_1789833480567_kypwwz",
+      "reference_id": "batch_repair_p_1789833480567_kypwwz_77w2a5",
+      "movement_type": "PURCHASE",
+      "quantity_delta": 10,
+      "reference_type": "stock_batch"
+    }
+  }
+]

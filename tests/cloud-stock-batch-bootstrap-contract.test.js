@@ -1,0 +1,14 @@
+const fs=require('fs'), assert=require('assert');
+const mig=fs.readFileSync('electron/migrations.js','utf8');
+const sync=fs.readFileSync('electron/syncService.js','utf8');
+assert.match(mig,/version:\s*24/);
+assert.match(mig,/sync-stock-batches-and-repair-cloud-bootstrap/);
+for (const suffix of ['insert','update','delete']) assert(mig.includes(`trg_outbox_stock_batches_${suffix}`));
+assert.match(mig,/entity_type='stock_batch'/);
+assert.match(mig,/cloud_shop_bound_at/);
+assert.match(mig,/cloud_sync_requires_adoption/);
+assert.match(sync,/c\.entityType === 'stock_batch'/);
+assert.match(sync,/movementIdsBefore/);
+assert.match(sync,/DELETE FROM stock_movements WHERE id=\?/);
+assert.match(sync,/DELETE FROM sync_outbox WHERE id > \?/);
+console.log('cloud stock-batch bootstrap contract: PASS');

@@ -1,0 +1,16 @@
+const fs=require('fs'),path=require('path'),assert=require('assert'); const root=path.join(__dirname,'../..');
+const pkg=JSON.parse(fs.readFileSync(root+'/server/package.json','utf8'));
+const compose=fs.readFileSync(root+'/server/docker-compose.yml','utf8');
+const migrate=fs.readFileSync(root+'/server/scripts/migrate.cjs','utf8');
+const e2e=fs.readFileSync(root+'/server/test/e2e/two-device-postgres.e2e.cjs','utf8');
+const sync=fs.readFileSync(root+'/server/src/sync/sync.service.ts','utf8');
+const health=fs.readFileSync(root+'/server/src/health/health.controller.ts','utf8');
+assert.equal(pkg.name,'@hisaflow/cloud'); assert(/^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$/.test(pkg.version));
+assert(pkg.scripts['db:migrate'] && pkg.scripts['test:e2e']);
+assert(compose.includes('postgres:16-alpine') && compose.includes('54329:5432'));
+assert(migrate.includes('hisaflow_schema_migrations'));
+assert(health.includes("@Controller('health')") && health.includes("database: 'ok'"));
+assert(sync.includes('DEVICE_NOT_REGISTERED_FOR_SHOP') && sync.includes('last_seen_at=now()'));
+assert(e2e.includes("CONCURRENT_VERSION") && e2e.includes('duplicate,true') && e2e.includes('DEVICE_NOT_REGISTERED_FOR_SHOP') && e2e.includes('revokedPull') && e2e.includes('revokedPush'));
+assert(sync.includes('async pull(shopId: string, deviceId: string') && sync.includes('revoked_at IS NULL')); 
+console.log('real integration harness contract: PASS');

@@ -1,0 +1,11 @@
+const fs=require('fs'), assert=require('assert');
+const migrations=fs.readFileSync('electron/migrations.js','utf8');
+const client=fs.readFileSync('electron/cloudSyncClient.js','utf8');
+assert(migrations.includes("version: 22"), 'migration 22 missing');
+assert(migrations.includes('ensureCloudSyncSchema(db)'), 'cloud schema repair missing');
+for (const table of ['sync_inbox','sync_conflicts','reconciliation_cache']) assert(migrations.includes(`CREATE TABLE IF NOT EXISTS ${table}`), `${table} repair missing`);
+assert(migrations.includes('normalizeCloudIdentity(db)'), 'cloud UUID normalization missing');
+assert(migrations.includes('crypto.randomUUID()'), 'UUID generation missing');
+assert(client.includes('LOCAL_SHOP_ID_INVALID'), 'local shop identity guard missing');
+assert(client.includes("typeof raw === 'object'"), 'structured cloud error formatting missing');
+console.log('Cloud registration + migration hotfix contract: PASS');

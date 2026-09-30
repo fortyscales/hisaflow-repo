@@ -1,0 +1,23 @@
+const fs=require('fs'),assert=require('assert');
+const read=p=>fs.readFileSync(p,'utf8');
+const sales=read('electron/domain/salesService.js');
+const products=read('electron/repositories/productRepository.js');
+const cloud=read('electron/cloudSyncClient.js');
+const preload=read('electron/preload.js');
+const screen=read('src/screens/ReconciliationScreen.jsx');
+const server=read('server/src/inventory/inventory-reconciliation.service.ts');
+const controller=read('server/src/inventory/inventory-reconciliation.controller.ts');
+assert(products.includes('hasOpenReconciliation'));
+assert(sales.includes('inventory reconciliation required; selling is temporarily blocked'));
+assert(read('electron/domain/creditService.js').includes('INVENTORY_RECONCILIATION_REQUIRED'));
+assert(server.includes('requiresPhysicalCount:true'));
+assert(cloud.includes('resolveReconciliation'));
+assert(preload.includes('resolveReconciliation'));
+assert(screen.includes('Physical quantity'));
+assert(screen.includes("n<0")); // zero physical stock is valid
+assert(controller.includes("@Post('resolve')"));
+assert(server.includes('RECONCILIATION_COUNT'));
+assert(server.includes('physical_count'));
+assert(server.includes('reconciliation_batch_id'));
+assert(server.includes("status='RESOLVED'"));
+console.log('v2.2.26 oversell reconciliation contract PASS');

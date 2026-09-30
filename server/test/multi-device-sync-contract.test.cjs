@@ -1,0 +1,18 @@
+const fs=require('fs'), path=require('path'), assert=require('assert');
+const root=path.join(__dirname,'../..');
+const main=fs.readFileSync(root+'/electron/main.js','utf8');
+const local=fs.readFileSync(root+'/electron/syncService.js','utf8');
+const client=fs.readFileSync(root+'/electron/cloudSyncClient.js','utf8');
+const preload=fs.readFileSync(root+'/electron/preload.js','utf8');
+const sidebar=fs.readFileSync(root+'/src/components/SideBar.jsx','utf8');
+const server=fs.readFileSync(root+'/server/src/sync/sync.service.ts','utf8');
+const migrations=fs.readFileSync(root+'/electron/migrations.js','utf8');
+assert(migrations.includes("version: 19") && migrations.includes('sync_conflicts'));
+assert(main.includes("setInterval(() => runBackgroundSync('timer'), 60000)") && main.includes("runBackgroundSync('network-online')"));
+assert(preload.includes('onSyncStatusChanged') && preload.includes('notifyNetworkOnline'));
+assert(sidebar.includes('syncNeedsAttention') && sidebar.includes('syncService.triggerSync()'));
+assert(client.includes('recordConflicts(conflictRows)') && client.includes("ack.push(x.eventId)"));
+assert(local.includes('server_payload') && local.includes('resolved_at'));
+assert(server.includes("code: 'CONCURRENT_VERSION'") && server.includes('serverPayload'));
+assert(local.includes("entityType === 'product') delete data.stock"));
+console.log('multi-device sync + status contract: PASS');

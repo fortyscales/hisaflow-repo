@@ -1,0 +1,14 @@
+const fs=require('fs'),assert=require('assert');
+const server=fs.readFileSync(require.resolve('../server/src/inventory/inventory-reconciliation.service.ts'),'utf8');
+const sync=fs.readFileSync(require.resolve('../server/src/sync/sync.service.ts'),'utf8');
+const local=fs.readFileSync(require.resolve('../electron/syncService'),'utf8');
+assert(server.includes('projectCanonicalInventory'));
+assert(server.includes('srv_inventory_'));
+assert(server.includes("entity_type='stock_movement'"));
+assert(server.includes("payload->>'quantity_delta'"));
+assert(server.includes('projectedBefore'));
+assert(server.includes("'stock_batch', batchId"));
+assert(sync.includes('Number(e.payload.quantity_delta || 0)'));
+assert(local.includes("startsWith('srv_inventory_')"));
+assert(local.includes('!serverInventoryProjection'));
+console.log('movement-authoritative sync v2.2.25 contract: PASS');

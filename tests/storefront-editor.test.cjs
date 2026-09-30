@@ -1,0 +1,27 @@
+const fs=require('fs'),vm=require('vm'),assert=require('assert/strict'),path=require('path');
+const esbuild=require('esbuild');
+let source=fs.readFileSync(path.join(__dirname,'../src/screens/StorefrontScreen.jsx'),'utf8').replace(/^import .*;\n/gm,'');
+source='const {useState,useEffect,useRef}=React;\n'+source;
+const code=esbuild.transformSync(source,{loader:'jsx',format:'cjs'}).code;
+const hooks=[],effects=[];let index=0,initial=true;
+const React={createElement:(type,props,...children)=>({type,props:props||{},children:children.flat(Infinity)}),useState:v=>{const i=index++;if(!(i in hooks))hooks[i]=v;return [hooks[i],v=>hooks[i]=typeof v==='function'?v(hooks[i]):v]},useRef:v=>{const i=index++;if(!(i in hooks))hooks[i]={current:v};return hooks[i]},useEffect:fn=>{if(initial)effects.push(fn)}};
+let saved={draft:{name:'Shop',description:'',location:'',hours:'',whatsapp:'255712345678',language:'en',products:[]},revision:0,live:false,publicUrl:'http://127.0.0.1:4100/api/v1/storefront/public/shop'};
+const calls=[];
+const api={storefront:async(action,payload)=>{calls.push({action,payload});if(action==='get')return structuredClone(saved);if(action==='catalog')return {products:[{id:'p1',name:'Tea',category:'Drinks',price:1500}]};if(action==='save'){saved={...saved,draft:payload.draft,revision:saved.revision+1};return structuredClone(saved)}if(action==='preview')return {html:'<p>Private preview</p>'};if(action==='publish'){saved={...saved,live:true,revision:saved.revision+1};return structuredClone(saved)}if(action==='unpublish'){saved={...saved,live:false,revision:saved.revision+1};return structuredClone(saved)}throw new Error('unexpected')},openExternal:async()=>{}};
+const mod={exports:{}};vm.runInNewContext(code,{module:mod,exports:mod.exports,React,useLanguage:()=>({language:'en'}),window:{hisaflow:api},URL,console,Store:'icon',Eye:'icon',Upload:'icon',Copy:'icon',ExternalLink:'icon',Globe:'icon',ImagePlus:'icon'});
+function render(){index=0;const t=mod.exports.default();initial=false;return t}
+const nodes=t=>[t,...(t?.children||[]).filter(c=>c&&typeof c==='object').flatMap(nodes)];
+const text=t=>(t.children||[]).filter(c=>typeof c==='string').join('');
+const button=(t,name)=>nodes(t).find(n=>n.type==='button'&&text(n)===name);
+(async()=>{render();effects[0]();await new Promise(r=>setImmediate(r));let t=render();
+ assert(nodes(t).some(n=>text(n).includes('Local test link')));
+ nodes(t).find(n=>n.type==='input'&&n.props.type==='checkbox').props.onChange();t=render();
+ nodes(t).find(n=>n.type==='input'&&n.props.type==='password').props.onChange({target:{value:'1234'}});t=render();
+ assert(button(t,'Publish storefront').props.disabled);
+ await button(t,'Save draft').props.onClick();t=render();assert(!button(t,'Publish storefront').props.disabled);
+ const save=calls.find(c=>c.action==='save');assert.equal(save.payload.pin,'1234');assert.equal(save.payload.draft.products[0].id,'p1');
+ await button(t,'Private preview').props.onClick();t=render();const frame=nodes(t).find(n=>n.type==='iframe');assert.equal(frame.props.sandbox,'allow-scripts');assert.equal(frame.props.srcDoc,'<p>Private preview</p>');assert(!saved.live);
+ await button(t,'Publish storefront').props.onClick();t=render();assert(saved.live);assert.equal(calls.filter(c=>c.action==='publish').length,1);
+ await button(t,'Unpublish').props.onClick();assert(!saved.live);assert.equal(saved.draft.products.length,1);
+ console.log('PASS: editor selection, PIN on writes, save-before-publish, private sandboxed preview, publish/unpublish, local-only link notice');
+})().catch(e=>{console.error(e);process.exitCode=1});

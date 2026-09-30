@@ -1,0 +1,15 @@
+const fs=require('fs'),path=require('path'),assert=require('assert');
+const root=path.join(__dirname,'../..');
+const pkg=JSON.parse(fs.readFileSync(path.join(root,'server/package.json'),'utf8'));
+const runner=fs.readFileSync(path.join(root,'server/scripts/run-integration.cjs'),'utf8');
+const sync=fs.readFileSync(path.join(root,'server/src/sync/sync.service.ts'),'utf8');
+const e2e=fs.readFileSync(path.join(root,'server/test/e2e/two-device-postgres.e2e.cjs'),'utf8');
+assert.equal(pkg.version,'1.0.0-rc.3');
+assert(pkg.devDependencies['@types/pg'] && pkg.devDependencies['@types/express'] && pkg.dependencies.express);
+assert(runner.includes('process.execPath'));
+assert(runner.includes("require.resolve('@nestjs/cli/bin/nest.js'"));
+assert(!runner.includes("process.platform==='win32'?'npm.cmd':'npm'"));
+assert(runner.includes('/api/v1/health/ready'));
+assert(sync.includes('async pull(shopId: string, deviceId: string') && sync.includes('revoked_at IS NULL'));
+assert(e2e.includes('revokedPull') && e2e.includes('revokedPush'));
+console.log('RC3 Windows live gate contract: PASS');

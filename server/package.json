@@ -1,0 +1,36 @@
+{
+  "name": "@hisaflow/cloud",
+  "version": "1.0.0-rc.5",
+  "private": true,
+  "description": "HisaFlow NestJS/PostgreSQL synchronization backend",
+  "scripts": {
+    "build": "nest build",
+    "start": "nest start",
+    "start:dev": "nest start --watch",
+    "test:contracts": "node test/sync-contract.test.cjs && node test/auth-onboarding-contract.test.cjs && node test/desktop-sync-transport-contract.test.cjs && node test/multi-device-sync-contract.test.cjs && node test/integration-harness-contract.test.cjs && node test/inventory-reconciliation-contract.test.cjs && node test/reconciliation-center-contract.test.cjs && node test/cloud-operations-contract.test.cjs && node test/production-readiness-contract.test.cjs && node test/rc3-windows-live-gate-contract.test.cjs",
+    "db:migrate": "node scripts/migrate.cjs",
+    "test:e2e": "node scripts/run-integration.cjs",
+    "integration:up": "docker compose up -d postgres",
+    "integration:down": "docker compose down",
+    "test:readiness": "node test/production-readiness-contract.test.cjs",
+    "test:storefront": "npm run build && node test/storefront.test.cjs && node test/storefront-page.test.cjs && node test/storefront-unavailable.test.cjs",
+    "test:storefront-unavailable": "npm run build && node test/storefront-unavailable.test.cjs"
+  },
+  "dependencies": {
+    "@nestjs/common": "^11.0.0",
+    "@nestjs/core": "^11.0.0",
+    "@nestjs/jwt": "^11.0.0",
+    "@nestjs/platform-express": "^11.0.0",
+    "pg": "^8.13.0",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.1",
+    "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "@nestjs/cli": "^11.0.0",
+    "@types/node": "^22.0.0",
+    "typescript": "^5.7.0",
+    "@types/express": "^5.0.0",
+    "@types/pg": "^8.11.0"
+  }
+}

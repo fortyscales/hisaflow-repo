@@ -1,0 +1,14 @@
+const fs=require('fs'); const assert=require('assert');
+const ui=fs.readFileSync('src/components/OnboardingWizard.jsx','utf8');
+const cloud=fs.readFileSync('electron/cloudSyncClient.js','utf8');
+assert(ui.includes('window.hisaflow.cloudLogin({ email: cloudEmail.trim(), password: cloudPassword })'));
+assert(!ui.includes('setCloudBaseUrl'));
+assert(!ui.includes('await window.hisaflow.getSyncIdentity()).shopId'));
+assert(ui.includes('const ident = await window.hisaflow.getSyncIdentity()'));
+assert(ui.includes('setStep("shopSelect")'));
+assert(cloud.includes("process.env.HISAFLOW_CLOUD_URL || 'http://127.0.0.1:4100'"));
+assert(cloud.includes('const binding = sync.bindFreshLocalShopToCloud(shopId)'));
+assert(cloud.includes('const pulled = await pull(sessionStore.getSession())'));
+assert(cloud.includes('await registerDevice()'));
+assert(cloud.includes('sync.markSyncSuccess()'));
+console.log('v2.3.2 multi-shop returning-owner bootstrap contract PASS');

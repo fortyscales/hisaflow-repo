@@ -1,0 +1,12 @@
+const fs=require("fs"); const ok=(x,m)=>{if(!x)throw new Error(m)}; const read=p=>fs.readFileSync(p,"utf8");
+const ui=read("src/screens/DocumentsScreen.jsx"),q=read("electron/queries.js"),pre=read("electron/preload.js"),svc=read("src/services/DataService.js"),theme=read("src/styles/theme.css"),dash=read("src/screens/DashboardScreen.jsx");
+ok(ui.includes("productMatches")&&ui.includes("brand,p.category,p.size,p.unit"),"search-first product picker missing");
+ok(ui.includes("editDocument")&&ui.includes("deleteCommercialDocument"),"document edit/delete UI missing");
+ok(q.includes("updateCommercialDocumentTx")&&q.includes("deleteCommercialDocumentTx"),"document edit/delete persistence missing");
+ok(q.includes("CONVERTED_DOCUMENT_LOCKED")&&q.includes("DOCUMENT_HAS_CONVERSION"),"audit safety missing");
+ok(pre.includes("commercialDocuments:update")&&pre.includes("commercialDocuments:delete"),"IPC edit/delete missing");
+ok(svc.includes("updateCommercialDocument")&&svc.includes("deleteCommercialDocument"),"service edit/delete missing");
+ok(ui.includes("Invoice Register")&&ui.includes("Quotations & Proformas"),"B2B tabs missing");
+ok(theme.includes("left: 50% !important")&&theme.includes("translateX(-50%)"),"receipt centering missing");
+ok(dash.includes("products.length === 0 && transactionCount === 0"),"fresh-install guard regressed");
+console.log("B2B workflow polish contract: PASS");

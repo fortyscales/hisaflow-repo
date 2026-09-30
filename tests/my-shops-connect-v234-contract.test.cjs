@@ -1,0 +1,14 @@
+const fs=require('fs'); const assert=require('assert');
+const ui=fs.readFileSync('src/screens/BusinessNetworkScreen.jsx','utf8');
+const cloud=fs.readFileSync('electron/cloudSyncClient.js','utf8');
+const sidebar=fs.readFileSync('src/components/SideBar.jsx','utf8');
+assert(ui.includes('joinCloudShop(shop.id)'), 'My Shops must explicitly join selected shop');
+assert(ui.includes('Unganisha duka hili kwenye kifaa'), 'Swahili connect CTA missing');
+assert(ui.includes('Connect this shop to this device'), 'English connect CTA missing');
+assert(ui.includes('cloudLogin({email:email.trim(),password})'), 'My Shops account login missing');
+assert(cloud.includes('sync.bindFreshLocalShopToCloud(shopId)'), 'join must retain fresh-workspace safety boundary');
+assert(cloud.includes('await registerDevice()'), 'join must register device');
+assert(cloud.includes('const pulled = await pull(sessionStore.getSession())'), 'join must bootstrap pull');
+assert(!sidebar.includes('{ key: "cloud"'), 'Cloud must remain hidden from sidebar');
+assert(!sidebar.includes('{ key: "reconciliation"'), 'Reconciliation must remain hidden from sidebar');
+console.log('v2.3.4 My Shops connect contract PASS');

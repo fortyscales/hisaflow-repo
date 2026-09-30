@@ -1,0 +1,14 @@
+const fs=require('fs'), assert=require('assert');
+const db=fs.readFileSync('electron/db.js','utf8');
+const mig=fs.readFileSync('electron/migrations.js','utf8');
+assert.match(mig,/version:\s*25/);
+assert.match(mig,/fifo-bootstrap-snapshots-not-purchases/);
+assert.match(mig,/entity_type='stock_movement'/);
+assert.match(mig,/batch_id LIKE 'batch_repair_%'/);
+assert.match(mig,/movement_type='PURCHASE'/);
+assert.match(mig,/synced_at IS NULL/);
+assert.match(mig,/evt_batch_snapshot_/);
+assert.match(db,/reconciliation SNAPSHOT, not a business purchase/);
+assert.match(db,/deleteRepairOutbox\.run\(before\)/);
+assert.match(db,/queueBatchSnapshot\.run/);
+console.log('cloud FIFO snapshot v2.2.23 contract: PASS');

@@ -1,0 +1,7 @@
+import 'reflect-metadata';
+import { NestFactory } from '@nestjs/core'; import { json } from 'express';
+import { AppModule } from './app.module'; import { loadConfig } from './config/env'; import { HttpLoggingInterceptor } from './common/http-logging.interceptor'; import { HttpExceptionFilter } from './common/http-exception.filter';
+async function bootstrap(){ const config=loadConfig(); const app=await NestFactory.create(AppModule,{bufferLogs:true,bodyParser:false}); const http:any=app.getHttpAdapter().getInstance(); if(config.trustProxy) http.set('trust proxy',1); app.use(json({limit:config.requestBodyLimit}));
+ app.enableCors({origin:(origin:string|undefined,cb:(err:Error|null,allow?:boolean)=>void)=>{if(!origin||config.corsOrigins.includes(origin)) return cb(null,true); cb(new Error('CORS_ORIGIN_DENIED'),false);},credentials:false,methods:['GET','POST','PATCH','DELETE','OPTIONS'],allowedHeaders:['Authorization','Content-Type','X-Request-Id']});
+ app.setGlobalPrefix('api/v1'); app.useGlobalInterceptors(new HttpLoggingInterceptor()); app.useGlobalFilters(new HttpExceptionFilter()); app.enableShutdownHooks(); await app.listen(config.port,'0.0.0.0'); console.log(JSON.stringify({level:'info',event:'server_ready',port:config.port,environment:config.nodeEnv})); }
+bootstrap().catch(e=>{console.error(JSON.stringify({level:'fatal',event:'startup_failed',code:e?.message||'STARTUP_FAILED'}));process.exit(1);});

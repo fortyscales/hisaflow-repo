@@ -1,0 +1,4 @@
+const fs=require('fs'),assert=require('assert'),path=require('path'); const root=path.resolve(__dirname,'..');
+const read=p=>fs.readFileSync(path.join(root,p),'utf8');
+const ctl=read('server/src/devices/devices.controller.ts'),sync=read('server/src/sync/sync.service.ts'),ui=read('src/screens/CloudScreen.jsx'),main=read('electron/main.js'),pre=read('electron/preload.js'),sql=read('server/sql/005_device_administration.sql');
+assert(sql.includes('revoked_at')); assert(ctl.includes("['owner','admin']")); assert(ctl.includes('DEVICE_ADMIN_REQUIRED')); assert(ctl.includes('DEVICE_REVOKED')); assert(ctl.includes('DEVICE_BELONGS_TO_ANOTHER_SHOP')); assert(sync.includes('revoked_at IS NULL')); assert(ui.includes('Cloud & Devices')&&ui.includes('Wingu na Vifaa')); assert(ui.includes('revokeCloudDevice')); assert(main.includes('cloud:revokeDevice')); assert(pre.includes('getCloudDevices')); console.log('PASS cloud device administration contract');

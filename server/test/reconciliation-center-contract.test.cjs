@@ -1,0 +1,15 @@
+const fs=require('fs'),path=require('path'),assert=require('assert');
+const root=path.resolve(__dirname,'../..');
+const read=p=>fs.readFileSync(path.join(root,p),'utf8');
+const screen=read('src/screens/ReconciliationScreen.jsx');
+const app=read('src/App.jsx'); const side=read('src/components/SideBar.jsx'); const preload=read('electron/preload.js'); const main=read('electron/main.js'); const cloud=read('electron/cloudSyncClient.js'); const svc=read('server/src/inventory/inventory-reconciliation.service.ts'); const ctl=read('server/src/inventory/inventory-reconciliation.controller.ts');
+assert(screen.includes('Inventory Reconciliation')&&screen.includes('Upatanisho wa Stoo'));
+assert(screen.includes('adjustInventory')&&screen.includes('acknowledgeReconciliation'));
+assert(screen.includes('getReconciliationDetails')&&screen.includes('getCachedReconciliationIssues'));
+assert(app.includes('ReconciliationScreen')&&side.includes('navReconciliation'));
+assert(preload.includes('getReconciliationDetails')&&main.includes('cloud:reconciliationDetails'));
+assert(cloud.includes('/inventory/reconciliation/details')&&cloud.includes('/inventory/reconciliation/acknowledge'));
+assert(ctl.includes("@Get('details')")&&svc.includes('device_name')&&svc.includes("entity_type='stock_movement'"));
+assert(svc.includes('inventory_reconciliation_activity'));
+assert(fs.existsSync(path.join(root,'server/sql/004_reconciliation_activity.sql')));
+console.log('PASS reconciliation center contract');

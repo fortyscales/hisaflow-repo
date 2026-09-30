@@ -1,0 +1,13 @@
+const fs=require('fs'),path=require('path'),assert=require('assert');
+const root=path.join(__dirname,'..');
+const service=fs.readFileSync(path.join(root,'src/sync/sync.service.ts'),'utf8');
+const controller=fs.readFileSync(path.join(root,'src/sync/sync.controller.ts'),'utf8');
+const sql=fs.readFileSync(path.join(root,'sql/001_sync_foundation.sql'),'utf8');
+assert(service.includes("protocolVersion !== 1"));
+assert(service.includes("SELECT event_id FROM sync_events WHERE event_id=$1"),'event idempotency missing');
+assert(service.includes("status: 'CONFLICT'"),'stale-version conflict missing');
+assert(service.includes('BEGIN')&&service.includes('ROLLBACK'),'transaction boundary missing');
+assert(controller.includes('assertShopAccess'),'tenant authorization missing');
+assert(sql.includes('shop_memberships')&&sql.includes('sync_changes')&&sql.includes('entity_snapshots'));
+assert(!service.includes('products.stock ='),'sync must not LWW product stock');
+console.log('PASS cloud sync foundation contract');

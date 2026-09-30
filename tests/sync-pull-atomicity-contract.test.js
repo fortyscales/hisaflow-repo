@@ -1,0 +1,13 @@
+const fs = require('fs');
+const assert = require('assert');
+const sync = fs.readFileSync(require.resolve('../electron/syncService'), 'utf8');
+const client = fs.readFileSync(require.resolve('../electron/cloudSyncClient'), 'utf8');
+assert(sync.includes('SYNC_PULL_MALFORMED_CHANGE'));
+assert(sync.includes('SYNC_PULL_UNSUPPORTED_ENTITY'));
+assert(sync.includes('CLOUD_DEVICE_ID_COLLISION'));
+assert(sync.includes('localOutboxHas.get(c.eventId)'));
+assert(sync.includes("if (cursor != null) setMeta('sync_pull_cursor', String(cursor));"));
+assert(sync.indexOf("insertInbox.run(c.eventId") < sync.indexOf("if (cursor != null) setMeta('sync_pull_cursor'"));
+assert(client.includes('sync.applyRemoteChanges(page, r.cursor)'));
+assert(!client.includes("filter(c => c.source_device_id !== ident.deviceId)"));
+console.log('sync pull atomicity contract: PASS');

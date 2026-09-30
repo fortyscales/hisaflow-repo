@@ -1,0 +1,14 @@
+const fs=require('fs');
+const assert=require('assert');
+const onboarding=fs.readFileSync('src/components/OnboardingWizard.jsx','utf8');
+const cloud=fs.readFileSync('electron/cloudSyncClient.js','utf8');
+const translations=fs.readFileSync('src/i18n/translations.js','utf8');
+assert(onboarding.includes('setStep("cloudLogin")'));
+assert(onboarding.includes('window.hisaflow.cloudLogin'));
+assert(onboarding.includes('setStep("shopSelect")'));
+assert(onboarding.includes('window.hisaflow.joinCloudShop(shop.id)'));
+assert(onboarding.includes('setBusinessName(shop.name)'));
+assert(cloud.includes("CLOUD_NOT_CONFIGURED"));
+assert(cloud.includes('sessionStore.saveSession({ memberships: shops })'));
+assert(translations.includes('chooseBusinessSubtitle'));
+console.log('v2.3.1 multi-shop onboarding contract PASS');

@@ -1,0 +1,14 @@
+const fs=require('fs'),assert=require('assert');
+const read=p=>fs.readFileSync(p,'utf8');
+const sync=read('electron/syncService.js');
+const cloud=read('electron/cloudSyncClient.js');
+const server=read('server/src/inventory/inventory-reconciliation.service.ts');
+assert(sync.includes("typeof value === 'object' ? JSON.stringify(value) : value"), 'remote JSON must be serialized for SQLite');
+assert(sync.includes('function markSyncSuccess()'), 'successful pull-only syncs need a success timestamp');
+assert(cloud.includes('sync.markSyncSuccess();'), 'cloud client must mark full sync success');
+assert(server.includes('idempotentReplay:true'), 'same physical-count retry must be idempotent');
+assert(server.includes('RECONCILIATION_ALREADY_RESOLVED_DIFFERENT_PHYSICAL_COUNT'), 'conflicting retry must be rejected');
+assert(server.includes('new ConflictException'), 'conflicting retry must not surface as generic 500');
+assert(server.includes('new BadRequestException'), 'invalid reconciliation requests need 4xx mapping');
+assert(server.includes('new NotFoundException'), 'missing reconciliation records need 404 mapping');
+console.log('v2.2.27 reconciliation reliability contract PASS');

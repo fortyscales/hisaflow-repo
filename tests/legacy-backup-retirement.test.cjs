@@ -1,0 +1,14 @@
+const fs=require('fs'),path=require('path'),vm=require('vm'),assert=require('assert/strict');
+const root=path.join(__dirname,'..');const source=fs.readFileSync(path.join(root,'src/services/backupService.js'),'utf8');
+let gathers=0,restores=0,fetches=0;const dataService=new Proxy({}, {get:(_t,key)=>async()=>{if(key==='restoreBackupData'){restores++;return {success:true}}gathers++;return key==='getSettings'?{businessName:'Test'}:[]}});
+const clicks=[];const context={dataService,fetch:()=>{fetches++;throw Error('Network must not be used')},console:{error(){}},Blob,URL:{createObjectURL:()=> 'blob:test',revokeObjectURL:()=>{}},document:{createElement:()=>({click(){clicks.push(this.download)}}),body:{appendChild(){},removeChild(){}}}};
+vm.createContext(context);vm.runInContext(source.replace(/^import .*;\n/,'').replace('export const backupService =','globalThis.backupService ='),context);
+(async()=>{for(const method of ['pushToCloud','fetchFromCloud']){const r=await context.backupService[method]('private-phone','private-pin');assert.equal(r.success,false);assert.equal(r.code,'LEGACY_CLOUD_BACKUP_RETIRED');assert(!JSON.stringify(r).includes('private-pin'))}assert.equal(fetches,0);assert.equal(gathers,0);assert.equal(restores,0);
+assert((await context.backupService.exportToFile()).success);assert.equal(clicks.length,1);assert.equal(gathers,6);
+assert((await context.backupService.importFromFile({text:async()=>JSON.stringify({products:[]})})).success);assert.equal(restores,1);
+assert.equal((await context.backupService.importFromFile({text:async()=>'{bad'})).success,false);assert.equal(restores,1);
+const app=fs.readFileSync(path.join(root,'src/App.jsx'),'utf8');assert(!/performAutoBackup|backupPendingRef|pushToCloud/.test(app));
+assert(!/script\.google\.com|businessId=|pin=/.test(source));
+const csp=fs.readFileSync(path.join(root,'src/index.html'),'utf8');assert(csp.includes("script-src 'self'"));assert(!csp.includes('google.com'));
+console.log('PASS: legacy upload/restore fail closed without network, credentials or data access; scheduler removed; local export/import preserved; CSP unchanged');
+})().catch(e=>{console.error(e);process.exitCode=1});
